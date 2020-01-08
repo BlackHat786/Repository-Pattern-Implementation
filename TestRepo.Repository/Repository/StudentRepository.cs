@@ -33,7 +33,11 @@ namespace TestRepo.Repository.Repository
         {
             return _repository.GetAll().ToList();
         }
-
+        public Students StudentNumber(int studntNumber)
+        {            
+            var std = GetAll();
+            return std.Find(x => x.StudentNumber == studntNumber);
+        }
         public void Insert(Students model)
         {
             _repository.Insert(model);

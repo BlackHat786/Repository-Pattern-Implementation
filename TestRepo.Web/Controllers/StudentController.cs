@@ -87,6 +87,61 @@ namespace TestRepo.Web.Controllers
         }
 
 
+        public FileResult DownloadExcel()
+        {
+            string path = "/Doc/Users.xlsx";
+            return File(path, "application/vnd.ms-excel", "Users.xlsx");
+        }
+        public ActionResult UploadExcel()
+        {
+            return View("UploadExcel");
+        }
+
+
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public ActionResult UploadExcel(HttpPostedFileBase FileUpload, StudentViewModel student, StudentBusiness studentBusiness)
+        {
+
+            string output = studentBusiness.ImportStudents(FileUpload, student);
+
+
+            if (output.Equals("No file chosen"))
+            {
+                ViewBag.Error = "No file chosen";
+
+            }
+            else if (output.Equals("The format of the file is incorrect"))
+            {
+                ViewBag.Error = "The format of the file is incorrect.";
+            }
+            else
+            {
+                ViewBag.Errors = "" + output;
+                return View("Import_Report");
+
+            }
+
+
+            return View("UploadExcel");
+        }
+
+        public ActionResult Student_Export()
+        {
+            StudentBusiness C = new StudentBusiness();
+            C.Student_Export();
+            return View(C);
+        }
+
+        public ActionResult Format()
+        {
+            StudentBusiness C = new StudentBusiness();
+            C.Format();
+            return View(C);
+        }
+
+
 
     }
 }
